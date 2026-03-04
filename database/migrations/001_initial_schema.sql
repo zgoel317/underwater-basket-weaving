@@ -1,26 +1,24 @@
--- Migration: Initial database schema setup
--- Version: 001
--- Date: 2024-01-01
+-- Migration: Initial schema setup
+-- Created: 2024-01-01
+-- Description: Creates all initial tables for underwater basket weaving dating app
 
 BEGIN;
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+-- Enable extensions
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "postgis";
 
--- Execute main schema
+-- Execute schema creation
 \i schema.sql
 
--- Insert sample data for testing
-INSERT INTO users (id, email, password_hash) VALUES 
-('550e8400-e29b-41d4-a716-446655440000', 'alice@example.com', '$2b$10$hash1'),
-('550e8400-e29b-41d4-a716-446655440001', 'bob@example.com', '$2b$10$hash2');
+-- Insert seed data for testing
+INSERT INTO users (email, password_hash) VALUES 
+('test@example.com', '$2b$12$example_hash'),
+('demo@example.com', '$2b$12$demo_hash');
 
-INSERT INTO profiles (user_id, display_name, experience_level, location_lat, location_lng, location_name) VALUES 
-('550e8400-e29b-41d4-a716-446655440000', 'Alice Weaver', 'Advanced', 37.7749, -122.4194, 'San Francisco, CA'),
-('550e8400-e29b-41d4-a716-446655440001', 'Bob Diver', 'Intermediate', 37.8044, -122.2711, 'Oakland, CA');
-
-INSERT INTO dive_sites (name, location_lat, location_lng, max_depth, difficulty_level) VALUES 
-('Monterey Bay Kelp Forest', 36.6177, -121.9166, 30, 'Intermediate'),
-('Point Lobos Reserve', 36.5225, -121.9552, 25, 'Beginner');
+INSERT INTO dive_sites (name, description, latitude, longitude, max_depth, difficulty_level, water_type) VALUES
+('Crystal Springs', 'Perfect for beginners, clear water with sandy bottom', 33.7490, -84.3880, 15, 'Beginner', 'freshwater'),
+('Blue Hole', 'Advanced diving site with deep waters', 25.2760, -79.9775, 45, 'Advanced', 'saltwater'),
+('Kelp Forest Cove', 'Intermediate site with natural kelp formations', 36.9531, -121.9994, 25, 'Intermediate', 'saltwater');
 
 COMMIT;
